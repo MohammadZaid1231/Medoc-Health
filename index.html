@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Collection Agent Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-container">
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="loading-icon">🧪</div>
+        </div>
+        <h2>SampleAgent Pro</h2>
+        <p>Initializing your workspace...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🧪</div>
+                <div class="logo-text">
+                    <span class="logo-title">SampleAgent</span>
+                    <span class="logo-subtitle">Pro</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="status-badge" id="connectionStatus">
+                    <div class="status-indicator"></div>
+                    <span id="statusText">Online</span>
+                </div>
+                <button class="notification-btn" onclick="toggleNotifications()">
+                    <span class="notification-icon">🔔</span>
+                    <span class="notification-count" id="notificationCount">3</span>
+                </button>
+            </div>
+        </div>
+        <div class="header-wave"></div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="section-header">
+                <h1 class="section-title">Today's Mission</h1>
+                <div class="date-display" id="currentDate"></div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card pending">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="pendingCount">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-trend">📈</div>
+                </div>
+                <div class="stat-card collected">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="collectedCount">0</div>
+                        <div class="stat-label">Collected</div>
+                    </div>
+                    <div class="stat-trend">📊</div>
+                </div>
+                <div class="stat-card total">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalCount">0</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-trend">💯</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn emergency" onclick="showEmergencyContact()">
+                    <div class="action-icon">🚨</div>
+                    <span>Emergency</span>
+                </button>
+                <button class="action-btn navigation" onclick="openMapOverview()">
+                    <div class="action-icon">🗺️</div>
+                    <span>Route</span>
+                </button>
+                <button class="action-btn weather" onclick="checkWeather()">
+                    <div class="action-icon">🌤️</div>
+                    <span>Weather</span>
+                </button>
+            </div>
+
+            <!-- Pickup List -->
+            <div class="pickup-section">
+                <div class="section-subheader">
+                    <h2>Sample Pickups</h2>
+                    <button class="refresh-btn" onclick="refreshPickups()">
+                        <span class="refresh-icon">🔄</span>
+                    </button>
+                </div>
+                <div id="pickupList" class="pickup-list">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Sample Tracking Section -->
+        <section id="tracking" class="section">
+            <div class="section-header">
+                <h1 class="section-title">Sample Tracking</h1>
+                <div class="tracking-id">ID: <span id="currentSampleId">SM001</span></div>
+            </div>
+            
+            <div class="tracking-card">
+                <div class="tracking-header">
+                    <div class="sample-info">
+                        <h3>Blood Sample Collection</h3>
+                        <div class="sample-details">
+                            <span class="detail">🏥 City General Hospital</span>
+                            <span class="detail">🌡️ 2-8°C Required</span>
+                            <span class="detail">⚡ High Priority</span>
+                        </div>
+                    </div>
+                    <div class="status-indicator-large" id="currentStatus">
+                        <div class="status-dot pending"></div>
+                        <span>Pending</span>
+                    </div>
+                </div>
+                
+                <!-- Collection Toggle -->
+                <div class="collection-toggle">
+                    <span class="toggle-label">Mark as Collected</span>
+                    <label class="switch">
+                        <input type="checkbox" id="collectionToggle" onchange="toggleCollection()">
+                        <span class="slider">
+                            <span class="slider-icon">📋</span>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Progress Timeline -->
+                <div class="timeline">
+                    <div class="timeline-progress" id="timelineProgress"></div>
+                    <div class="timeline-step active" id="step1" data-step="1">
+                        <div class="step-dot">
+                            <span class="step-icon">📍</span>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">Pickup Scheduled</div>
+                            <div class="step-time" id="stepTime1">09:00 AM</div>
+                        </div>
+                    </div>
+                    <div class="timeline-step" id="step2" data-step="2">
+                        <div class="step-dot">
+                            <span class="step-icon">✅</span>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">Sample Collected</div>
+                            <div class="step-time" id="stepTime2">--</div>
+                        </div>
+                    </div>
+                    <div class="timeline-step" id="step3" data-step="3">
+                        <div class="step-dot">
+                            <span class="step-icon">🚛</span>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">In Transit</div>
+                            <div class="step-time" id="stepTime3">--</div>
+                        </div>
+                    </div>
+                    <div class="timeline-step" id="step4" data-step="4">
+                        <div class="step-dot">
+                            <span class="step-icon">🏁</span>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">Delivered</div>
+                            <div class="step-time" id="stepTime4">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample Conditions -->
+                <div class="conditions-monitor">
+                    <h4>Environmental Conditions</h4>
+                    <div class="conditions-grid">
+                        <div class="condition-item">
+                            <div class="condition-icon">🌡️</div>
+                            <div class="condition-value" id="temperature">4.2°C</div>
+                            <div class="condition-label">Temperature</div>
+                        </div>
+                        <div class="condition-item">
+                            <div class="condition-icon">💧</div>
+                            <div class="condition-value" id="humidity">45%</div>
+                            <div class="condition-label">Humidity</div>
+                        </div>
+                        <div class="condition-item">
+                            <div class="condition-icon">⏱️</div>
+                            <div class="condition-value" id="elapsed">0:00</div>
+                            <div class="condition-label">Elapsed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Chat Section -->
+        <section id="chat" class="section">
+            <div class="section-header">
+                <h1 class="section-title">AI Medical Assistant</h1>
+                <div class="ai-status">
+                    <div class="ai-indicator active"></div>
+                    <!-- <span>Your Bot is Ready!</span> -->
+                </div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai welcome">
+                        <div class="message-avatar">
+                            <div class="avatar-icon">🤖</div>
+                            <div class="avatar-pulse"></div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-text">
+                                Hello! I'm your AI medical assistant. I can help you with:
+                                <ul>
+                                    <li>Sample collection procedures</li>
+                                    <li>Safety protocols and guidelines</li>
+                                    <li>Troubleshooting field issues</li>
+                                    <li>Emergency procedures</li>
+                                </ul>
+                                What would you like to know?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            class="chat-input" 
+                            id="chatInput" 
+                            placeholder="Ask me about sample collection procedures..."
+                            onkeypress="handleChatKeyPress(event)"
+                        >
+                        <button class="voice-btn" onclick="toggleVoiceInput()" title="Voice Input">
+                            <span class="voice-icon">🎤</span>
+                        </button>
+                    </div>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <span class="send-icon">➤</span>
+                    </button>
+                </div>
+
+                <!-- Quick Suggestions -->
+                <div class="quick-suggestions">
+                    <button class="suggestion-chip" onclick="sendQuickMessage('How to handle blood samples?')">
+                        🩸 Blood Sample Handling
+                    </button>
+                    <button class="suggestion-chip" onclick="sendQuickMessage('What if temperature is too high?')">
+                        🌡️ Temperature Issues
+                    </button>
+                    <button class="suggestion-chip" onclick="sendQuickMessage('Emergency contamination protocol')">
+                        ⚠️ Contamination Protocol
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Tips Section -->
+        <section id="tips" class="section">
+            <div class="section-header">
+                <h1 class="section-title">Healthcare Tips</h1>
+                <button class="refresh-tips-btn" onclick="loadHealthTips(true)">
+                    <span class="refresh-icon">🔄</span>
+                    <span>Refresh</span>
+                </button>
+            </div>
+            
+            <div class="tips-container">
+                <div class="tips-loading" id="tipsLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading fresh health tips...</p>
+                </div>
+                <div id="healthTips" class="health-tips">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <div class="tip-categories">
+                <button class="category-btn active" data-category="all" onclick="filterTips('all')">
+                    📋 All Tips
+                </button>
+                <button class="category-btn" data-category="safety" onclick="filterTips('safety')">
+                    🛡️ Safety
+                </button>
+                <button class="category-btn" data-category="handling" onclick="filterTips('handling')">
+                    🧤 Handling
+                </button>
+                <button class="category-btn" data-category="transport" onclick="filterTips('transport')">
+                    🚛 Transport
+                </button>
+            </div>
+        </section>
+
+        <!-- Report Issue Section -->
+        <section id="report" class="section">
+            <div class="section-header">
+                <h1 class="section-title">Report Issue</h1>
+                <div class="priority-indicator" id="priorityIndicator">
+                    <span class="priority-dot medium"></span>
+                    <span>Standard Report</span>
+                </div>
+            </div>
+            
+            <div class="report-container">
+                <form id="issueForm" class="issue-form" onsubmit="submitIssue(event)">
+                    <div class="form-section">
+                        <h3>Issue Details</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-icon">🏷️</span>
+                                Issue Type
+                            </label>
+                            <select class="form-select" id="issueType" required onchange="updatePriority()">
+                                <option value="">Select issue type</option>
+                                <option value="equipment">Equipment Malfunction</option>
+                                <option value="transport">Transportation Issue</option>
+                                <option value="sample">Sample Contamination</option>
+                                <option value="access">Access Problem</option>
+                                <option value="temperature">Temperature Control</option>
+                                <option value="safety">Safety Concern</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-icon">⚡</span>
+                                Priority Level
+                            </label>
+                            <div class="priority-buttons">
+                                <input type="radio" id="lowPriority" name="priority" value="low">
+                                <label for="lowPriority" class="priority-btn low">
+                                    <span class="priority-color"></span>
+                                    Low
+                                </label>
+                                
+                                <input type="radio" id="mediumPriority" name="priority" value="medium" checked>
+                                <label for="mediumPriority" class="priority-btn medium">
+                                    <span class="priority-color"></span>
+                                    Medium
+                                </label>
+                                
+                                <input type="radio" id="highPriority" name="priority" value="high">
+                                <label for="highPriority" class="priority-btn high">
+                                    <span class="priority-color"></span>
+                                    High
+                                </label>
+                                
+                                <input type="radio" id="urgentPriority" name="priority" value="urgent">
+                                <label for="urgentPriority" class="priority-btn urgent">
+                                    <span class="priority-color"></span>
+                                    Urgent
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Location & Details</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-icon">📍</span>
+                                Location
+                            </label>
+                            <div class="location-input-group">
+                                <input type="text" class="form-input" id="issueLocation" 
+                                       placeholder="Hospital/Clinic name or address" required>
+                                <button type="button" class="location-btn" onclick="getCurrentLocation()">
+                                    <span class="location-icon">🎯</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-icon">📝</span>
+                                Description
+                            </label>
+                            <textarea class="form-textarea" id="issueDescription" 
+                                      placeholder="Describe the issue in detail... Include any relevant circumstances, what you tried to resolve it, and immediate actions needed."
+                                      required></textarea>
+                            <div class="character-count">
+                                <span id="charCount">0</span>/500 characters
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                            <span class="btn-icon">🗑️</span>
+                            Clear
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="btn-icon">📤</span>
+                            Submit Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <button class="nav-item active" data-section="dashboard" onclick="showSection('dashboard')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+                <div class="nav-indicator"></div>
+            </button>
+            <button class="nav-item" data-section="tracking" onclick="showSection('tracking')">
+                <div class="nav-icon">📋</div>
+                <div class="nav-label">Track</div>
+                <div class="nav-indicator"></div>
+            </button>
+            <button class="nav-item" data-section="chat" onclick="showSection('chat')">
+                <div class="nav-icon">🤖</div>
+                <div class="nav-label">AI Help</div>
+                <div class="nav-indicator"></div>
+            </button>
+            <button class="nav-item" data-section="tips" onclick="showSection('tips')">
+                <div class="nav-icon">💡</div>
+                <div class="nav-label">Tips</div>
+                <div class="nav-indicator"></div>
+            </button>
+            <button class="nav-item" data-section="report" onclick="showSection('report')">
+                <div class="nav-icon">⚠️</div>
+                <div class="nav-label">Report</div>
+                <div class="nav-indicator"></div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="showQuickActions()" title="Quick Actions">
+        <div class="fab-icon">⚡</div>
+    </button>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

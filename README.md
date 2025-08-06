@@ -1,6 +1,6 @@
 # 🏥 Medical Sample Tracking System
 
-[![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://your-demo-link.com)
+[![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://medoc-health.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
